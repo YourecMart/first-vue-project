@@ -3,7 +3,7 @@
         <h1>Страница с постами</h1>
         <div class="app__btns">
             <my-button @click="toggleModal">Создать пост</my-button>
-            <my-select :options="sortOptions" :value="selectedSort"/>
+            <my-select @change="sortPosts" :options="sortOptions" :value="selectedSort"/>
         </div>
         
         <my-dialog v-model:show="dialogVisible">
@@ -67,13 +67,23 @@ export default {
         console.log('mounted!')
         this.fetchPosts();
     },
+  
+    computed: {
+        sortPosts(){
+            console.log(this.selectedSort)
+            if (!this.selectedSort) {
+                return this.posts
+            }
+          return this.posts.sort((a, b) => a[this.selectedSort].localCompare(b[this.selectedSort]))
+        }
+    }
 
 }
 </script>
 
 
 <style >
-* {
+*{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
